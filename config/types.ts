@@ -10,3 +10,14 @@ export type Product = {
     count: number;
   };
 };
+
+export type ProductsProps = {
+  products: Product[];
+  categories: string[];
+};
+
+export type FilterProps = {
+  categories: string[];
+  filterProducts: (search: string, category: string) => Promise<void>;
+  clearFilters: () => Promise<void>;
+};

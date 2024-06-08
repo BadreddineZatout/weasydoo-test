@@ -19,7 +19,6 @@ export default async function Page({ params }: { params: { id: number } }) {
 
   async function deleteProduct(formData: FormData) {
     "use server";
-    console.log(product);
     // const res = await fetch(`${siteConfig.api_url}/products/${product.id}`);
   }
 
@@ -43,8 +42,8 @@ export default async function Page({ params }: { params: { id: number } }) {
             >
               Edit
             </Button>
-            <form className="ml-5" action={deleteProduct}>
-              <Button type="submit" color="danger">
+            <form action={deleteProduct} className="ml-5">
+              <Button color="danger" type="submit">
                 Delete
               </Button>
             </form>
