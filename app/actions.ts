@@ -1,10 +1,23 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
+
 import { siteConfig } from "@/config/site";
 import { Product } from "@/config/types";
 
-const getProducts = async () => {
+export const getProducts = async () => {
   const res = await fetch(`${siteConfig.api_url}/products?sort=desc`);
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
+
+  return res.json();
+};
+
+export const getCategories = async () => {
+  const res = await fetch(`${siteConfig.api_url}/products/categories`);
 
   if (!res.ok) {
     throw new Error("Failed to fetch data");
@@ -40,4 +53,24 @@ export const filterProducts = async (search: string, category: string) => {
 
 export const clearFilters = async () => {
   return await getProducts();
+};
+
+export const addProduct = async (data: FormData) => {
+  const res = await fetch("https://fakestoreapi.com/products", {
+    method: "POST",
+    body: JSON.stringify({
+      title: data.get("title"),
+      price: data.get("price"),
+      description: data.get("description"),
+      image: data.get("image"),
+      category: data.get("category"),
+    }),
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
+  revalidatePath("/");
+
+  redirect("/");
 };
