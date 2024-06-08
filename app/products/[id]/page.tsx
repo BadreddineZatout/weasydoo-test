@@ -1,21 +1,10 @@
 import React from "react";
 import { Button, Image, Link, Progress } from "@nextui-org/react";
 
-import { siteConfig } from "@/config/site";
-import { Product } from "@/config/types";
-
-async function getData(id: number): Promise<Product> {
-  const res = await fetch(`${siteConfig.api_url}/products/${id}`);
-
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
-  }
-
-  return res.json();
-}
+import { getProduct } from "@/app/actions";
 
 export default async function Page({ params }: { params: { id: number } }) {
-  const product = await getData(params.id);
+  const product = await getProduct(params.id);
 
   async function deleteProduct(formData: FormData) {
     "use server";
@@ -42,7 +31,7 @@ export default async function Page({ params }: { params: { id: number } }) {
                 <Button
                   as={Link}
                   color="warning"
-                  href={`products/${product.id}/edit`}
+                  href={`/products/${product.id}/edit`}
                 >
                   Edit
                 </Button>

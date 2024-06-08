@@ -55,6 +55,16 @@ export const clearFilters = async () => {
   return await getProducts();
 };
 
+export const getProduct = async (id: number): Promise<Product> => {
+  const res = await fetch(`${siteConfig.api_url}/products/${id}`);
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
+
+  return res.json();
+};
+
 export const addProduct = async (data: FormData) => {
   const res = await fetch("https://fakestoreapi.com/products", {
     method: "POST",
@@ -73,4 +83,27 @@ export const addProduct = async (data: FormData) => {
   revalidatePath("/");
 
   redirect("/");
+};
+
+export const editProduct = async (data: FormData) => {
+  const res = await fetch(
+    `https://fakestoreapi.com/products/${data.get("id")}`,
+    {
+      method: "PUT",
+      body: JSON.stringify({
+        title: data.get("title"),
+        price: data.get("price"),
+        description: data.get("description"),
+        image: data.get("image"),
+        category: data.get("category"),
+      }),
+    },
+  );
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
+  revalidatePath(`/products/${data.get("id")}`);
+
+  redirect(`/products/${data.get("id")}`);
 };
