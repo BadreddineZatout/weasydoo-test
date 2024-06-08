@@ -8,14 +8,7 @@ import {
 } from "@nextui-org/react";
 
 import { siteConfig } from "@/config/site";
-
-type Product = {
-  id: number;
-  title: string;
-  price: number;
-  category: string;
-  image: string;
-};
+import { Product } from "@/config/types";
 
 async function getData() {
   const res = await fetch(`${siteConfig.api_url}/products?sort=desc`);
@@ -28,13 +21,13 @@ async function getData() {
 }
 
 export default async function Page() {
-  const data = await getData();
+  const products = await getData();
 
   return (
     <main className="w-full flex justify-between items-start">
       <div className="w-1/4">Filters</div>
       <div className="w-3/4 grid grid-cols-3 gap-5">
-        {data.map((product: Product) => (
+        {products.map((product: Product) => (
           <Card key={product.id} className="py-4 col-span-1 h-fit">
             <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
               <p className="text-tiny uppercase font-bold">{product.price}$</p>
