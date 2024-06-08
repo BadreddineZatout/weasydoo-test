@@ -6,6 +6,27 @@ import { redirect } from "next/navigation";
 import { siteConfig } from "@/config/site";
 import { Product } from "@/config/types";
 
+export const login = async (data: FormData) => {
+  const res = await fetch(`${siteConfig.api_url}/auth/login`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      username: data.get("username"),
+      password: data.get("password"),
+    }),
+  });
+
+  if (!res.ok) {
+    return {
+      error: "Invalid username or password",
+    };
+  }
+
+  return res.json();
+};
+
 export const getProducts = async () => {
   const res = await fetch(`${siteConfig.api_url}/products?sort=desc`);
 
@@ -68,6 +89,9 @@ export const getProduct = async (id: number): Promise<Product> => {
 export const addProduct = async (data: FormData) => {
   const res = await fetch(`${siteConfig.api_url}/products`, {
     method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify({
       title: data.get("title"),
       price: data.get("price"),
@@ -88,6 +112,9 @@ export const addProduct = async (data: FormData) => {
 export const editProduct = async (data: FormData) => {
   const res = await fetch(`${siteConfig.api_url}/products/${data.get("id")}`, {
     method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify({
       title: data.get("title"),
       price: data.get("price"),

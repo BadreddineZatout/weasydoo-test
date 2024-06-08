@@ -1,3 +1,5 @@
+"use client";
+import React from "react";
 import {
   Navbar as NextUINavbar,
   NavbarContent,
@@ -7,31 +9,39 @@ import {
   NavbarMenuItem,
 } from "@nextui-org/navbar";
 import { Link } from "@nextui-org/link";
-import { link as linkStyles } from "@nextui-org/theme";
-import NextLink from "next/link";
-import clsx from "clsx";
+import { Button } from "@nextui-org/button";
 
-import { siteConfig } from "@/config/site";
+import { useAppDispatch, useAppSelector } from "@/config/hooks";
+import { logout } from "@/app/store/user";
 
-export const Navbar = () => {
+export function Navbar() {
+  const token = useAppSelector((state) => state.user.token);
+  const dispatch = useAppDispatch();
+
+  const handleLogout = () => {
+    dispatch(logout());
+  };
+
   return (
     <NextUINavbar maxWidth="xl" position="sticky">
       <NavbarContent className="basis-1/5 sm:basis-full" justify="end">
         <ul className="hidden lg:flex gap-4 justify-start ml-2">
-          {siteConfig.navItems.map((item) => (
-            <NavbarItem key={item.href}>
-              <NextLink
-                className={clsx(
-                  linkStyles({ color: "foreground" }),
-                  "data-[active=true]:text-primary data-[active=true]:font-medium",
-                )}
-                color="foreground"
-                href={item.href}
-              >
-                {item.label}
-              </NextLink>
+          <NavbarItem>
+            <Button as={Link} href="/">
+              Home
+            </Button>
+          </NavbarItem>
+          {token ? (
+            <NavbarItem>
+              <Button onClick={handleLogout}>Logout</Button>
             </NavbarItem>
-          ))}
+          ) : (
+            <NavbarItem>
+              <Button as={Link} href="/login">
+                Login
+              </Button>
+            </NavbarItem>
+          )}
         </ul>
       </NavbarContent>
 
@@ -41,25 +51,24 @@ export const Navbar = () => {
 
       <NavbarMenu>
         <div className="mx-4 mt-2 flex flex-col gap-2">
-          {siteConfig.navMenuItems.map((item, index) => (
-            <NavbarMenuItem key={`${item}-${index}`}>
-              <Link
-                color={
-                  index === 2
-                    ? "primary"
-                    : index === siteConfig.navMenuItems.length - 1
-                      ? "danger"
-                      : "foreground"
-                }
-                href="#"
-                size="lg"
-              >
-                {item.label}
-              </Link>
+          <NavbarMenuItem>
+            <Button as={Link} href="/">
+              Home
+            </Button>
+          </NavbarMenuItem>
+          {token ? (
+            <NavbarMenuItem>
+              <Button onClick={handleLogout}>Logout</Button>
             </NavbarMenuItem>
-          ))}
+          ) : (
+            <NavbarMenuItem>
+              <Button as={Link} href="/login">
+                Login
+              </Button>
+            </NavbarMenuItem>
+          )}
         </div>
       </NavbarMenu>
     </NextUINavbar>
   );
-};
+}

@@ -13,14 +13,6 @@ export const siteConfig = {
       label: "Login",
       href: "/login",
     },
-    {
-      label: "Register",
-      href: "/pricing",
-    },
-    {
-      label: "Logout",
-      href: "/logout",
-    },
   ],
   navMenuItems: [
     {
@@ -30,14 +22,6 @@ export const siteConfig = {
     {
       label: "Login",
       href: "/login",
-    },
-    {
-      label: "Register",
-      href: "/pricing",
-    },
-    {
-      label: "Logout",
-      href: "/logout",
     },
   ],
 };

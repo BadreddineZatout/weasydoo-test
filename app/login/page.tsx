@@ -1,7 +1,8 @@
+"use server";
 import React from "react";
 
-const page = () => {
-  return <div>page</div>;
-};
+import LoginForm from "@/components/LoginForm";
 
-export default page;
+export default async function Page() {
+  return <LoginForm />;
+}

@@ -1,9 +1,7 @@
-import { Button } from "@nextui-org/button";
-import { Link } from "@nextui-org/link";
-
 import { getCategories, getProducts } from "./actions";
 
 import Products from "@/components/products";
+import CreateProductButton from "@/components/CreateProductButton";
 
 export default async function Page() {
   var products = await getProducts();
@@ -12,14 +10,7 @@ export default async function Page() {
   return (
     <main className="w-full">
       <div className="w-full">
-        <Button
-          as={Link}
-          className="float-right mb-10"
-          color="success"
-          href="products/create"
-        >
-          Add Product
-        </Button>
+        <CreateProductButton />
       </div>
       <div className="w-full flex justify-between gap-10 items-start">
         <Products categories={categories} products={products} />
