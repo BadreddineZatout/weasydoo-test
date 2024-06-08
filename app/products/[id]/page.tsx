@@ -1,14 +1,30 @@
 import React from "react";
 import { Button, Image, Link, Progress } from "@nextui-org/react";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 import { getProduct } from "@/app/actions";
+import { siteConfig } from "@/config/site";
 
 export default async function Page({ params }: { params: { id: number } }) {
   const product = await getProduct(params.id);
 
-  async function deleteProduct(formData: FormData) {
+  async function deleteProduct(data: FormData) {
     "use server";
-    // const res = await fetch(`${siteConfig.api_url}/products/${product.id}`);
+    const res = await fetch(
+      `${siteConfig.api_url}/products/${data.get("id")}`,
+      {
+        method: "DELETE",
+      },
+    );
+
+    if (!res.ok) {
+      throw new Error("Failed to fetch data");
+    }
+
+    revalidatePath("/");
+
+    redirect("/");
   }
 
   return (
@@ -36,6 +52,7 @@ export default async function Page({ params }: { params: { id: number } }) {
                   Edit
                 </Button>
                 <form action={deleteProduct} className="ml-5">
+                  <input name="id" type="hidden" value={product.id} />
                   <Button color="danger" type="submit">
                     Delete
                   </Button>

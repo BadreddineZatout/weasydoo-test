@@ -66,7 +66,7 @@ export const getProduct = async (id: number): Promise<Product> => {
 };
 
 export const addProduct = async (data: FormData) => {
-  const res = await fetch("https://fakestoreapi.com/products", {
+  const res = await fetch(`${siteConfig.api_url}/products`, {
     method: "POST",
     body: JSON.stringify({
       title: data.get("title"),
@@ -86,19 +86,16 @@ export const addProduct = async (data: FormData) => {
 };
 
 export const editProduct = async (data: FormData) => {
-  const res = await fetch(
-    `https://fakestoreapi.com/products/${data.get("id")}`,
-    {
-      method: "PUT",
-      body: JSON.stringify({
-        title: data.get("title"),
-        price: data.get("price"),
-        description: data.get("description"),
-        image: data.get("image"),
-        category: data.get("category"),
-      }),
-    },
-  );
+  const res = await fetch(`${siteConfig.api_url}/products/${data.get("id")}`, {
+    method: "PUT",
+    body: JSON.stringify({
+      title: data.get("title"),
+      price: data.get("price"),
+      description: data.get("description"),
+      image: data.get("image"),
+      category: data.get("category"),
+    }),
+  });
 
   if (!res.ok) {
     throw new Error("Failed to fetch data");
