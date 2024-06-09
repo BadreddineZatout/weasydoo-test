@@ -52,7 +52,7 @@ export const filterProducts = async (search: string, category: string) => {
 
   if (category) {
     const res = await fetch(
-      `${siteConfig.api_url}/products/category/${category}`,
+      `${siteConfig.api_url}/products/category/${category}`
     );
 
     if (!res.ok) {
@@ -130,4 +130,18 @@ export const editProduct = async (data: FormData) => {
   revalidatePath(`/products/${data.get("id")}`);
 
   redirect(`/products/${data.get("id")}`);
+};
+
+export const deleteProduct = async (id: number) => {
+  const res = await fetch(`${siteConfig.api_url}/products/${id}`, {
+    method: "DELETE",
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
+
+  revalidatePath("/");
+
+  redirect("/");
 };
